@@ -4,12 +4,18 @@
 ##                                       ##
 ###########################################
 
-#required packages
+# source combine and summarise file downloaded from github (set filepath to file location)
+source('./R/combine_and_summarise0.R')
+
+
+# required packages
 require(sarscov2)
 require(ape)
 require(phangorn)
 require(ggplot2)
 require(ggtree)
+require(scales)
+require(lubridate)
 
 # Input some information for the plots and calculations
 location <- 'Madinah'
@@ -21,28 +27,31 @@ last_sequence <- as.Date('2020-05-16')
 
 # file path from the current working directory to the save location for the outputs
 # all path_to_save or ofn commands can be set to NULL to not save to file.
-path <- './eg_analysis/' 
-#dir.create(path)
+path <- './eg_outputs/' 
+dir.create(path)
+
+# Input path pointing to existing data
+in_path <- './data'
 
 ################################################################################################
 # The steps to combine log and traj files require log and traj files from your own beast runs  #
 ################################################################################################
 
 
-# we use multiple short chains and a large burnin to produce more rapid results. 
-burnin <- 50 #percentage
+    # we use multiple short chains and a large burnin to produce more rapid results. 
+    burnin <- 50 #percentage
 
-# measure of lenience when including log and traj files, higher retains fewer. Setting to -1 will inlude all files
-pth <- 0.01
+    # measure of lenience when including log and traj files, higher retains fewer. Setting to -1 will inlude all files
+    pth <- 0.01
 
-# extract log and traj files produced from all of the beast runs by their file extentions 
-# If some traces show signs of stickiness or poor convergence they should be removed manually before this step
-logfns = list.files( pattern = '[0-9].xml.log$' )
-trajfns = list.files( pattern = '[0-9].xml.traj$' )
+    # extract log and traj files produced from all of the beast runs by their file extentions 
+    # If some traces show signs of stickiness or poor convergence they should be removed manually before this step
+    logfns = list.files( pattern = '[0-9].xml.log$' )
+    trajfns = list.files( pattern = '[0-9].xml.traj$' )
 
 
-# combine log and traj files and save each as .rds file
-combined <- combine_logs_and_traj(logfns, trajfns, burnProportion = burnin/100, ntraj=200, pth=pth,
+    # combine log and traj files and save each as .rds file
+    combined <- combine_logs_and_traj(logfns, trajfns, burnProportion = burnin/100, ntraj=200, pth=pth,
                                                        ofn = paste0(path,'logs.rds') , ofntraj = paste0(path,'traj.rds'))
 
 
@@ -53,10 +62,10 @@ combined <- combine_logs_and_traj(logfns, trajfns, burnProportion = burnin/100, 
 
 
 # produce a table of R0, growth rate and doubling time and save to object R_num 
-R_num <-  SEIJR_reproduction_number(paste0(path,'logs.rds'))
+R_num <-  SEIJR_reproduction_number(paste0(in_path,'logs.rds'))
 
 # Import and format reported cases for comparison in plots.
-reported <- read.csv(paste0(path,'reportedcases.csv'), stringsAsFactors = F)
+reported <- read.csv(paste0(in_path,'reportedcases.csv'), stringsAsFactors = F)
 reported$Date <- lubridate::parse_date_time(reported$Date.of.confirmation , c("Ymd", "dmY", "mdY"))
 reported$Date <- ymd(as.character(reported$Date))
 # Names required by functions
@@ -68,10 +77,11 @@ reported$Confirmed <- c(reported$Cumulative[1], diff(reported$Cumulative, lag=1)
 
 
 # plot of estimated and reported cumulative cases over time
-SEIJR_plot_size_returned <-  SEIJR_plot_size(trajdf = paste0(path,'traj.rds')
-                    , case_data = NULL
+SEIJR_plot_size_returned <-  SEIJR_plot_size(trajdf = paste0(in_path,'traj.rds')
+                    , case_data = reported
                     , date_limits = c( first_internal, last_sequence ) 
                     , path_to_save=paste0(path, 'size.png')
+                    , last_tip = last_internal
                     , log_y_axis = T)
 SEIJR_plot_size_returned$pl
 
@@ -82,28 +92,31 @@ infections_at_last_tip <- SEIJR_plot_size_returned$pldf[which(
 
 
 # Plot of estimated and reported daily new infections 
-daily_inf <- SEIJR_plot_daily_inf( paste0(path,'traj.rds')
-                      , paste0(path,'logs.rds')
-                      , case_data = NULL
+daily_inf <- SEIJR_plot_daily_inf( paste0(in_path,'traj.rds')
+                      , paste0(in_path,'logs.rds')
+                      , case_data = reported
                       , date_limits = c( first_internal, last_sequence ) 
                       , path_to_save=paste0(path, 'daily_inf.png')
+                      , last_tip = last_internal
                       , log_y_axis = T
 )
 daily_inf$pl
 
 # plot fo estimated Rt over time
-rt <- SEIJR_plot_Rt(paste0(path,'traj.rds')
-                   , paste0(path,'logs.rds')
+rt <- SEIJR_plot_Rt(paste0(in_path,'traj.rds')
+                   , paste0(in_path,'logs.rds')
                    , gamma0 = 73
                    , gamma1 = 121.667
                    , date_limits = c(as.Date("2020-02-15"), NA)
                    , path_to_save = paste0(path, 'Rt.png')
+                   , last_tip = last_internal
+                   , lockdown_date = lockdown_date
 )
 rt$plot
 
 
 # plot of proportion of total cases reported at each time point
-rep <- plot_rep(paste0(path,'traj.rds')
+rep <- plot_rep(paste0(in_path,'traj.rds')
                 , case_data = reported
                 , date_limits = c(as.Date("2020-02-29"), NA)
                 , path_to_save = paste0(path,'reporting.png')
@@ -114,20 +127,19 @@ rep$pl
 #       Producing an mcc tree requires your own tree files from your own beast analysis        #
 ################################################################################################
 
-## Producing and using the mcc tree 
+    ## Producing and using the mcc tree 
 
-treefiles <- list.files( pattern = '[0-9].xml.trees$')
+    treefiles <- list.files( pattern = '[0-9].xml.trees$')
 
-## select only the tree files for which log and traj files were retained
-included <- paste0('\\.',c(1,10,12,13,14,15,17,18,19,2,20,3,6,7,8), '\\.')
+    ## select only the tree files for which log and traj files were retained
+    included <- paste0('\\.',c(1,10,12,13,14,15,17,18,19,2,20,3,6,7,8), '\\.')
 
-treefiles <- treefiles[grep(paste(included, collapse="|"), treefiles)]
+    treefiles <- treefiles[grep(paste(included, collapse="|"), treefiles)]
 
-# run these through BEAST2 functions - these are R wrappers for the existing commnad line functions. 
-# windows specific version is available for tree annotator as the command line interface differs. Check the package help files for this.
-tree_combiner_helper(burnin=burnin, fns=treefiles, ofn = paste0(path,'combined.trees'), resample = 10000)
-# On windows tree annotator needs to be run after using log cobiner as there is no -trees option
-tree_annotator_windows(inputfile = paste0(path,'combined.trees'), outputfile = paste0(path,'mcc.nex'), lowMem = T)
+    # run these through BEAST2 functions - these are R wrappers for the existing commnad line functions. 
+    tree_combiner_helper(burnin=burnin, fns=treefiles, ofn = paste0(path,'combined.trees'), resample = 10000)
+    # On windows tree annotator needs to be run after using log cobiner as there is no -trees option
+    tree_annotator_windows(inputfile = paste0(path,'combined.trees'), outputfile = paste0(path,'mcc.nex'), lowMem = T)
 
 
 ################################################################################################
