@@ -1,6 +1,7 @@
 # Step by step guide to analyzing a regional data set with the SEIJR model
 
 version: 2.0.0
+
 David Jorgensen
 
 ---
