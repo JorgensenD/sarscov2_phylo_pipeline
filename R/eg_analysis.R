@@ -13,7 +13,6 @@ require(ggtree)
 
 # Input some information for the plots and calculations
 location <- 'Madinah'
-lockdown_date <- NULL
 first_internal <- as.Date('2020-03-29')
 last_internal <- as.Date('2020-04-20')
 last_sequence <- as.Date('2020-05-16')
