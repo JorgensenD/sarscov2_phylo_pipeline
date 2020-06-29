@@ -58,7 +58,7 @@ With the downloaded data we carry out the following steps, you may wish to chang
 
 ### Producing BEAST2 xml
 From the complete gisaid alignment and metadata individual alignments are produced using the  `sarscov2Rutils` R package. These alignments are used to generate a set of starting trees for multiple beast runs which are inserted into xml templates available [here](https://github.com/emvolz-phylodynamics/sarscov2Rutils/tree/sarscov2Rutils/inst/extdata). These templates will be downloaded alongside the R package. 
-A [sample R script]() has been produced to demonstrate these functions and their usage.
+A [sample R script](https://github.com/JorgensenD/sarscov2_phylo_pipeline/blob/master/R/eg_xml_format.R) has been produced to demonstrate these functions and their usage.
 Following these steps should result in multiple BEAST2 xml files with the same alignment and different starting trees. They should also include the internal population size and start time of SEIJR dynamics set in the R script. The most recent reports use the `seijr0.1.3_skeleton_coupledMCMC.xml` template file.
 
 The XML can also be formatted in the BEAST2 xml editor beauti with the Phydyn SEIR template.
@@ -72,7 +72,7 @@ The xml files can also be run with the desktop gui or command line versions of B
 
 ### Analyzing output
 The current pipeline uses the reproducible reporting R package `orderly` to produce reports for publication on [sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/).
-Versions of the figures presented in these reports can be reproduced using the `sarscov2Rutils` R package. An example R script is provided to demonstrate combining log files from BEAST2 and visualizing the outputs using R.
+Versions of the figures presented in these reports can be reproduced using the `sarscov2Rutils` R package. An [example R script](https://github.com/JorgensenD/sarscov2_phylo_pipeline/blob/master/R/eg_analysis.R) is provided to demonstrate combining log files from BEAST2 and visualizing the outputs using R.
 
 We recommend checking log files manually with tracer for signs of stickiness, poor convergence etc. before running through the R code.
 
