@@ -10,7 +10,7 @@ version: 2.0.0
 
 
 
-This walk through uses the example of Madinah, Saudi Arabia and should allow a user to reproduce the figures presented in the [blog post on sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/2020/06/07/Madinah-April-20.html). Due to restrictions on sharing gisaid data the sequence and metadata used are not provided in full alongside this walkthrough. A list of the sequences included in the analysis is [provided on github](). 
+This walk through uses the example of Madinah, Saudi Arabia and should allow a user to reproduce the figures presented in the [blog post on sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/2020/06/07/Madinah-April-20.html). Due to restrictions on sharing gisaid data the sequence and metadata used are not provided in full alongside this walkthrough. A list of the sequences included in the analysis is [provided on github](https://github.com/JorgensenD/sarscov2_phylo_pipeline/blob/master/data/seqnames.txt). 
 
 
 ### Software and packages
@@ -43,7 +43,7 @@ With the downloaded data we carry out the following steps, you may wish to chang
 * Clip sequences based on a reference (29400 bases starting from first ORF).
 * Build maximum likelihood phylogenies on subsets of the alignment (~1000 sequences) with an additional 500 sequences that are known to be well sequenced and aligned. (IQtree).
 * For each maximum likelihood phylogeny calculate cophenetic distance matrix (cophenetic.phylo in ape r package)  and drop new sequences from the alignment if their mean pairwise GD is >3 standard deviations from the phylogeny mean.
-* Calculate [TN93 distances](https://github.com/veg/tn93) and keep those <0.0001 (example file??)
+* Calculate [TN93 distances](https://github.com/veg/tn93) and keep those <0.0001.
 
 ### Editing downloaded metadata
 * Edit metadata file to include only sequences included in the final alignment.
