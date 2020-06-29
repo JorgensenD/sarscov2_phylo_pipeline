@@ -10,7 +10,7 @@ version: 2.0.0
 
 ---
 
-This walk through uses the example of Madinah, Saudi Arabia and should allow a user to reproduce updated versions of the figures presented in the [blog post on sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/2020/06/07/Madinah-April-20.html). Due to restrictions on sharing gisaid data the sequence and metadata used are not provided in full alongside this walkthrough. A list of the sequences included in the analysis is [provided on github](https://github.com/JorgensenD/sarscov2_phylo_pipeline/blob/master/data/seqnames.txt). 
+This walk through uses the example of Madinah, Saudi Arabia and should allow a user to reproduce updated versions of the figures presented in the [blog post on sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/2020/06/07/Madinah-April-20.html). Due to restrictions on sharing gisaid data the sequence and metadata used are not provided in full alongside this walkthrough. A list of the sequences included in the analysis is [provided on github](./data/seqnames.txt). 
 
 Cloning this github repo will allow file paths to correctly point to data and code in R. Set the working directory to the top level of the cloned repo.
 
@@ -22,7 +22,7 @@ You will need to install:
 * [TN93](https://github.com/veg/tn93)
 * [R](https://www.r-project.org/)
 
-You will also need the CRAN R packages: `ape`, `treedater`, `phangorn`, `ggplot2`,`ggtreee`
+You will also need the CRAN R packages: `ape`, `treedater`, `phangorn`, `ggplot2`,`ggtreee`, `scales`, `lubridate`
 and the utility functions package `sarscov2` from the [sarscov2Rutils github](https://github.com/emvolz-phylodynamics/sarscov2Rutils).
 
 IQ-TREE and the BEAST2 bin/lib (windows/unix) folder will need to be on the PATH to work with the convenience wrapper functions in sarscov2Rutils. 
