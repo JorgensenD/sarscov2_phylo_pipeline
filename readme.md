@@ -2,13 +2,13 @@
 
 version: 2.0.0
 
-
+---
 
 [sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/)
 
 [MRC Centre for Global Infectious Disease Analysis at Imperial College London](https://www.imperial.ac.uk/mrc-global-infectious-disease-analysis).
 
-
+---
 
 This walk through uses the example of Madinah, Saudi Arabia and should allow a user to reproduce updated versions of the figures presented in the [blog post on sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/2020/06/07/Madinah-April-20.html). Due to restrictions on sharing gisaid data the sequence and metadata used are not provided in full alongside this walkthrough. A list of the sequences included in the analysis is [provided on github](https://github.com/JorgensenD/sarscov2_phylo_pipeline/blob/master/data/seqnames.txt). 
 
