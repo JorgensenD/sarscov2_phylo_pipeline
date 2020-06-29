@@ -5,6 +5,7 @@ David Jorgensen
 
 ---
 **Code contributed by: Olivia Boyd, Lily Geidelberg, David Jorgensen, Manon Ragonnet, Igor Siveroni and Erik Volz**
+
 **Affiliations:**
 [sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/)
 
