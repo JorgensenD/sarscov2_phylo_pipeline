@@ -1,9 +1,11 @@
 # Step by step guide to analyzing a regional data set with the SEIJR model
 
 version: 2.0.0
+David Jorgensen
 
 ---
-
+**Code contributed by: Olivia Boyd, Lily Geidelberg, David Jorgensen, Manon Ragonnet, Igor Siveroni and Erik Volz**
+**Affiliations:**
 [sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/)
 
 [MRC Centre for Global Infectious Disease Analysis at Imperial College London](https://www.imperial.ac.uk/mrc-global-infectious-disease-analysis).
