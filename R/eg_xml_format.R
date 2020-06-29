@@ -20,7 +20,7 @@ region='Madinah'
 ## A path to the file containing small genetic distance pairs
 distfn = 'tn93dist.txt'
 ## When do internal SEIR dynamics initiate: 
-startTime = 2020.085
+startTime = 2020.15
 ## What is the populatio size of the region of interest?
 popSize = 1100000
 ## How many sequences to include within the region?
