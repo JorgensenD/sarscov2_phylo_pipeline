@@ -12,11 +12,10 @@ version: 2.0.0
 
 This walk through uses the example of Madinah, Saudi Arabia and should allow a user to reproduce updated versions of the figures presented in the [blog post on sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/2020/06/07/Madinah-April-20.html). Due to restrictions on sharing gisaid data the sequence and metadata used are not provided in full alongside this walkthrough. A list of the sequences included in the analysis is [provided on github](https://github.com/JorgensenD/sarscov2_phylo_pipeline/blob/master/data/seqnames.txt). 
 
+Cloning this github repo will allow file paths to correctly point to data and code in R. Set the working directory to the top level of the cloned repo.
 
 ### Software and packages
-*A conda environment containing the software and packages used in this analysis is available [here]().*
-
-If you are not using this environment you will need to install:
+You will need to install:
 * [BEAST2](https://www.beast2.org/) and associated package PhyDyn (for coupled MCMC runs we also use the BEASTLabs and CoupledMCMC packages)
 * [MAFFT](https://mafft.cbrc.jp/alignment/software/)
 * [IQ-TREE](http://www.iqtree.org/)
@@ -72,11 +71,11 @@ The xml files can also be run with the desktop gui or command line versions of B
 
 ### Analyzing output
 The current pipeline uses the reproducible reporting R package `orderly` to produce reports for publication on [sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/).
-Versions of the figures presented in these reports can be reproduced using the `sarscov2Rutils` R package. An [example R script](https://github.com/JorgensenD/sarscov2_phylo_pipeline/blob/master/R/eg_analysis.R) is provided to demonstrate combining log files from BEAST2 and visualizing the outputs using R.
+Versions of the figures presented in these reports can be reproduced using the `sarscov2Rutils` R package, versions of these functions which reproduce the stylised versions of these plots found online are in [`combine_and_summarise0.R`](./R/combine_and_summarise0.R). An [example R script](./R/eg_analysis.R) is provided to demonstrate combining log files from BEAST2 and visualizing the outputs using R.
 
 We recommend checking log files manually with tracer for signs of stickiness, poor convergence etc. before running through the R code.
 
 To replicate the plots used in the reports a csv file of reported cases over time also needs to be provided for comparison.
 
-Examples of combined log and traj files, an mcc tree and reported cases file are available [here]() which allow the plots in the Madinah report to be reproduced using the example code. 
+Examples of combined log and traj files, an mcc tree and reported cases file are available [here](./data/) which allow the plots in the Madinah report to be reproduced using the example code. 
 
