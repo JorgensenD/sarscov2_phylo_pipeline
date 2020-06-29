@@ -71,11 +71,8 @@ The xml files can also be run with the desktop gui or command line versions of B
 
 ### Analyzing output
 The current pipeline uses the reproducible reporting R package `orderly` to produce reports for publication on [sarscov2phylodynamics.org](http://sarscov2phylodynamics.org/).
-Versions of the figures presented in these reports can be reproduced using the `sarscov2Rutils` R package, versions of these functions which reproduce the stylised versions of these plots found online are in [`combine_and_summarise0.R`](./R/combine_and_summarise0.R). An [example R script](./R/eg_analysis.R) is provided to demonstrate combining log files from BEAST2 and visualizing the outputs using R.
+Although versions of the figures presented in these reports can be reproduced using the `sarscov2Rutils` R package, the functions which reproduce the stylised versions of these plots found online are in [`combine_and_summarise0.R`](./R/combine_and_summarise0.R). An [example R script](./R/eg_analysis.R) is provided to demonstrate combining log files from BEAST2 and visualizing the outputs using R. Indented sections of this code require you to have your own output from a beast2 run, other sections can be carried out using the provided example data files found in the [data folder](./data/) of this repo.
 
-We recommend checking log files manually with tracer for signs of stickiness, poor convergence etc. before running through the R code.
+When running your own analyses we recommend checking log files manually with tracer for signs of stickiness, poor convergence etc. before running through the R code.
 
-To replicate the plots used in the reports a csv file of reported cases over time also needs to be provided for comparison.
-
-Examples of combined log and traj files, an mcc tree and reported cases file are available [here](./data/) which allow the plots in the Madinah report to be reproduced using the example code. 
 
