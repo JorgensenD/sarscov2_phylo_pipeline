@@ -1,9 +1,8 @@
 #' @export 
 phylo_plot_aesthetics <- list(scale_x_datetime(labels = date_format("%B %d")),
                               theme_minimal(), 
-                              xlab('')#,
-                              #theme(plot.title = element_text(hjust = 0.5), axis.text=element_text(size=10),
-                                    #axis.title=element_text(size=10))
+                              xlab(''),
+
 )
 
 
@@ -87,11 +86,6 @@ SEIJR_plot_size <- function(trajdf
     readRDS(trajdf) -> trajdf 
   }
   
-
-  #~ 	r <- read.csv( '../seir21.0/weifangReported.csv', header=TRUE , stringsAsFactors=FALSE)
-  #~ 	r$Date <- as.Date( r$Date )
-  #~ 	r$reported = TRUE
-  #~ 	r$`Cumulative confirmed` = r$Cumulative.confirmed.cases
   
   dfs <- split( trajdf, trajdf$Sample )
   taxis <- dfs[[1]]$t 
@@ -154,10 +148,7 @@ SEIJR_plot_size <- function(trajdf
     geom_path( aes(x = Date, y = `97.5%` , group = !reported), lwd=0.6, col = "#A2A2A2") +
     phylo_plot_aesthetics +
     ylab ('Cumulative estimated infections'  ) +
-    # geom_label(label = round(pldf[which( as.Date(pldf$Date) == last_tip & pldf$reported == FALSE )  , "Cumulative infections"], 0),
-    #           aes(x = pldf[which( as.Date(pldf$Date) == last_tip & pldf$reported == FALSE )  , "Date"] + lubridate::days(4)
-    #                        , y = pldf[which( as.Date(pldf$Date) == last_tip & pldf$reported == FALSE )  , "Cumulative infections"]*1.2),
-    #          fill = "#0e0a00", alpha = 0 , col = "#0e0a00", size = 5)
+
     
     geom_segment(aes(x = as.POSIXct.Date(last_tip), 
                      y = pldf[which( as.Date(pldf$Date) == last_tip & pldf$reported == FALSE ),"Cumulative infections"]
