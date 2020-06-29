@@ -13,14 +13,21 @@ require(ggtree)
 
 # Input some information for the plots and calculations
 location <- 'Madinah'
+lockdown_date <- NULL
 first_internal <- as.Date('2020-03-29')
 last_internal <- as.Date('2020-04-20')
 last_sequence <- as.Date('2020-05-16')
+
 
 # file path from the current working directory to the save location for the outputs
 # all path_to_save or ofn commands can be set to NULL to not save to file.
 path <- './eg_analysis/' 
 #dir.create(path)
+
+################################################################################################
+# The steps to combine log and traj files require log and traj files from your own beast runs  #
+################################################################################################
+
 
 # we use multiple short chains and a large burnin to produce more rapid results. 
 burnin <- 50 #percentage
@@ -37,6 +44,13 @@ trajfns = list.files( pattern = '[0-9].xml.traj$' )
 # combine log and traj files and save each as .rds file
 combined <- combine_logs_and_traj(logfns, trajfns, burnProportion = burnin/100, ntraj=200, pth=pth,
                                                        ofn = paste0(path,'logs.rds') , ofntraj = paste0(path,'traj.rds'))
+
+
+################################################################################################
+# If you are using the uploaded log and traj files these functions can be used to create plots #
+################################################################################################
+
+
 
 # produce a table of R0, growth rate and doubling time and save to object R_num 
 R_num <-  SEIJR_reproduction_number(paste0(path,'logs.rds'))
@@ -96,8 +110,11 @@ rep <- plot_rep(paste0(path,'traj.rds')
                 , errorbar = T)
 rep$pl
 
-## Producing and using the mcc tree
+################################################################################################
+#       Producing an mcc tree requires your own tree files from your own beast analysis        #
+################################################################################################
 
+## Producing and using the mcc tree 
 
 treefiles <- list.files( pattern = '[0-9].xml.trees$')
 
@@ -112,8 +129,14 @@ tree_combiner_helper(burnin=burnin, fns=treefiles, ofn = paste0(path,'combined.t
 # On windows tree annotator needs to be run after using log cobiner as there is no -trees option
 tree_annotator_windows(inputfile = paste0(path,'combined.trees'), outputfile = paste0(path,'mcc.nex'), lowMem = T)
 
+
+################################################################################################
+# The mcc tree included in the walkthrough can be used for these plots. Metadata for the tree  #
+#     plot will need to be downloaded from gisaid (Continent == Region in newer datasets)      #
+################################################################################################
+
 # this nexus file can be used to plot the sampling distribution over time
-sarscov2:::plot_sample_distribution(path_to_nex = paste0(path,'mcc.nex'), path_to_save = paste0(path, 'sample_distribution.png'))
+sarscov2:::plot_sample_distribution(path_to_nex = paste0('mcc.nex'), path_to_save = paste0(path, 'sample_distribution.png'))
 
 
 # plotting the tree requires a table of continents for each of the included sequences.
@@ -123,8 +146,8 @@ names(continents) <- c('name', 'continent')
 # Currently the function uses Americas rather than north and south america
 continents$continent <- gsub('NorthAmerica|SouthAmerica', 'Americas', continents$continent)
 # write to file
-write.table(country_dict, "country_dict.txt", col.names = T, row.names = F)
+write.table(country_dict, paste0(path, "country_dict.txt"), col.names = T, row.names = F)
 
-mcc_col_tree_plot(paste0(path,'mcc.nex'), MRSD= last_sequence, "country_dict.txt", internal = location , style = 3, ofn=paste0(path,'mcc2.png'))
+mcc_col_tree_plot(paste0(path,'mcc.nex'), MRSD= last_sequence, paste0(path, "country_dict.txt"), internal = location , style = 3, ofn=paste0(path,'mcc2.png'))
 
 
