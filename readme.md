@@ -62,8 +62,8 @@ With the downloaded data we carry out the following steps, you may wish to chang
 
 ### 4: Producing BEAST2 xml
 
-<kbd>Right</kbd> [Example script producing alingment and BEAST2 xml](./R/eg_xml_format.R)
-<kbd>Right</kbd> [Template BEAST2 xml file used in our analyses](https://github.com/emvolz-phylodynamics/sarscov2Rutils/tree/sarscov2Rutils/inst/extdata)
+  * [Example script producing alingment and BEAST2 xml](./R/eg_xml_format.R)
+  * [Template BEAST2 xml file used in our analyses](https://github.com/emvolz-phylodynamics/sarscov2Rutils/tree/sarscov2Rutils/inst/extdata)
 
 From the complete gisaid alignment and metadata individual alignments are produced using the  `sarscov2Rutils` R package. These alignments are used to generate a set of starting trees for multiple beast runs which are inserted into xml templates available [here](https://github.com/emvolz-phylodynamics/sarscov2Rutils/tree/sarscov2Rutils/inst/extdata). These templates will be downloaded alongside the R package. 
 A [sample R script](./R/eg_xml_format.R) has been produced to demonstrate these functions and their usage.
@@ -73,7 +73,7 @@ The XML can also be formatted in the BEAST2 xml editor beauti with the Phydyn SE
 
 ### 5: Running BEAST2 
 
-<kbd>Right</kbd> [Cluster submission guide for PBS](https://github.com/JorgensenD/BEAST_CLUSTER)
+  * [Cluster submission guide for PBS](https://github.com/JorgensenD/BEAST_CLUSTER)
 
 It is recommended that these beast analyses are run in parallel on an hpc platform. Instructions and example submission scripts for the Imperial PBS cluster are available [in the BEAST_CLUSTER github repo](https://github.com/JorgensenD/BEAST_CLUSTER). These scripts can be modified for other hpc platforms as needed.
 
@@ -83,8 +83,8 @@ The xml files can also be run with the desktop gui or command line versions of B
 
 ### 6: Analyzing output
 
-<kbd>Right</kbd> [Example script using analysis functions](./R/eg_analysis.R)
-<kbd>Right</kbd> [Additional plotting functions](./R/combine_and_summarise0.R)
+  * [Example script using analysis functions](./R/eg_analysis.R)
+  * [Additional plotting functions](./R/combine_and_summarise0.R)
 
 The current pipeline uses the reproducible reporting R package `orderly` to produce reports for publication.
 Although versions of the figures presented in these reports can be reproduced using the `sarscov2Rutils` R package, the functions which reproduce the stylised versions of these plots found online are in [`combine_and_summarise0.R`](./R/combine_and_summarise0.R) in this repo. An [example R script](./R/eg_analysis.R) is provided to demonstrate combining log files from BEAST2 and visualizing the outputs using R. Indented sections of this code require you to have your own output from a beast2 run, other sections can be carried out using the provided example data files found in the [data folder](./data/) of this repo.
