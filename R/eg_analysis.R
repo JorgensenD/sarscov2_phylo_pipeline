@@ -4,8 +4,7 @@
 ##                                       ##
 ###########################################
 
-# source combine and summarise file downloaded from github (set filepath to file location)
-source('./R/combine_and_summarise0.R')
+
 
 
 # required packages
@@ -16,10 +15,14 @@ require(ggplot2)
 require(ggtree)
 require(scales)
 require(lubridate)
+require(dplyr)
+
+# source combine and summarise file downloaded from github (set filepath to file location)
+source('./R/combineAndSummarize0.R')
 
 # Input some information for the plots and calculations
 location <- 'Madinah'
-lockdown_date <- NULL
+date_lockdown <- NULL
 first_internal <- as.Date('2020-03-29')
 last_internal <- as.Date('2020-04-20')
 last_sequence <- as.Date('2020-05-16')
@@ -31,7 +34,7 @@ path <- './eg_outputs/'
 dir.create(path)
 
 # Input path pointing to existing data
-in_path <- './data'
+in_path <- './data/'
 
 ################################################################################################
 # The steps to combine log and traj files require log and traj files from your own beast runs  #
@@ -62,6 +65,7 @@ in_path <- './data'
 
 
 # produce a table of R0, growth rate and doubling time and save to object R_num 
+
 R_num <-  SEIJR_reproduction_number(paste0(in_path,'logs.rds'))
 
 # Import and format reported cases for comparison in plots.
@@ -90,6 +94,7 @@ infections_at_last_tip <- SEIJR_plot_size_returned$pldf[which(
   as.Date(SEIJR_plot_size_returned$pldf$Date) == last_internal &
     SEIJR_plot_size_returned$pldf$reported == FALSE )        ,]
 
+infections_at_last_tip
 
 # Plot of estimated and reported daily new infections 
 daily_inf <- SEIJR_plot_daily_inf( paste0(in_path,'traj.rds')
@@ -110,13 +115,13 @@ rt <- SEIJR_plot_Rt(paste0(in_path,'traj.rds')
                    , date_limits = c(as.Date("2020-02-15"), NA)
                    , path_to_save = paste0(path, 'Rt.png')
                    , last_tip = last_internal
-                   , lockdown_date = lockdown_date
+                   , lockdown_date = date_lockdown
 )
 rt$plot
 
 
 # plot of proportion of total cases reported at each time point
-rep <- plot_rep(paste0(in_path,'traj.rds')
+rep <- SEIJR_plot_reporting(paste0(in_path,'traj.rds')
                 , case_data = reported
                 , date_limits = c(as.Date("2020-02-29"), NA)
                 , path_to_save = paste0(path,'reporting.png')
@@ -148,7 +153,7 @@ rep$pl
 ################################################################################################
 
 # this nexus file can be used to plot the sampling distribution over time
-sarscov2:::plot_sample_distribution(path_to_nex = paste0('mcc.nex'), path_to_save = paste0(path, 'sample_distribution.png'))
+sarscov2:::plot_sample_distribution(path_to_nex = paste0(in_path,'mcc.nex'), path_to_save = paste0(path, 'sample_distribution.png'))
 
 
 # plotting the tree requires a table of continents for each of the included sequences.
@@ -158,8 +163,8 @@ names(continents) <- c('name', 'continent')
 # Currently the function uses Americas rather than north and south america
 continents$continent <- gsub('NorthAmerica|SouthAmerica', 'Americas', continents$continent)
 # write to file
-write.table(country_dict, paste0(path, "country_dict.txt"), col.names = T, row.names = F)
+write.table(continents, paste0(path, "country_dict.txt"), col.names = T, row.names = F)
 
-mcc_col_tree_plot(paste0(path,'mcc.nex'), MRSD= last_sequence, paste0(path, "country_dict.txt"), internal = location , style = 3, ofn=paste0(path,'mcc2.png'))
+mcc_col_tree_plot(paste0(in_path,'mcc.nex'), mostRecentSampleDate = last_sequence, paste0(path, "country_dict.txt"), internal = location , style = 3, ofn=paste0(path,'mcc2.png'))
 
 

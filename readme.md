@@ -27,7 +27,7 @@ You will need to install:
 * [TN93](https://github.com/veg/tn93)
 * [R](https://www.r-project.org/)
 
-You will also need the CRAN R packages: `ape`, `treedater`, `phangorn`, `ggplot2`,`ggtreee`, `scales`, `lubridate`
+You will also need the CRAN R packages: `ape`, `treedater`, `phangorn`, `ggplot2`,`ggtreee`, `scales`, `lubridate`, `limSolve`, `dplyr`
 and the utility functions package `sarscov2` from the [sarscov2Rutils github](https://github.com/emvolz-phylodynamics/sarscov2Rutils).
 
 IQ-TREE and the BEAST2 bin/lib (windows/unix) folder will need to be on the PATH to work with the convenience wrapper functions in sarscov2Rutils. 
@@ -84,10 +84,10 @@ The xml files can also be run with the desktop gui or command line versions of B
 ### 6: Analyzing output
 
   * [Example script using analysis functions](./R/eg_analysis.R)
-  * [Additional plotting functions](./R/combine_and_summarise0.R)
+  * [Additional plotting functions](./R/combineAndSummarize0.R)
 
 The current pipeline uses the reproducible reporting R package `orderly` to produce reports for publication.
-Although versions of the figures presented in these reports can be reproduced using the `sarscov2Rutils` R package, the functions which reproduce the stylised versions of these plots found online are in [`combine_and_summarise0.R`](./R/combine_and_summarise0.R) in this repo. An [example R script](./R/eg_analysis.R) is provided to demonstrate combining log files from BEAST2 and visualizing the outputs using R. Indented sections of this code require you to have your own output from a beast2 run, other sections can be carried out using the provided example data files found in the [data folder](./data/) of this repo.
+Although versions of the figures presented in these reports can be reproduced using the `sarscov2Rutils` R package, the functions which reproduce the stylised versions of these plots found online are in [`combineAndSummarize0.R`](./R/combineAndSummarize0.R) in this repo. An [example R script](./R/eg_analysis.R) is provided to demonstrate combining log files from BEAST2 and visualizing the outputs using R. Indented sections of this code require you to have your own output from a beast2 run, other sections can be carried out using the provided example data files found in the [data folder](./data/) of this repo.
 
 When running your own analyses we recommend checking log files manually with tracer for signs of stickiness, poor convergence etc. before running through the R code.
 

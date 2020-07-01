@@ -1,8 +1,7 @@
 #' @export 
 phylo_plot_aesthetics <- list(scale_x_datetime(labels = date_format("%B %d")),
                               theme_minimal(), 
-                              xlab(''),
-
+                              xlab('')
 )
 
 
@@ -19,7 +18,10 @@ phylo_plot_aesthetics <- list(scale_x_datetime(labels = date_format("%B %d")),
 SEIJR_reproduction_number <- function( X, gamma0 = 73, gamma1 = 121.667,precision =3 ) {
   # tau = 74, p_h = 0.20 , 
   cat( 'Double check that you have provided the correct gamma0 and gamma1 parameters\n' )
-  
+  if (!is.data.frame(X)){
+    # assume this is path to a rds 
+    readRDS(X) -> X 
+  }
   
   if(is.null(X$gamma1))
     X$gamma1 <- gamma1; 
@@ -75,7 +77,7 @@ SEIJR_plot_size <- function(trajdf
                             , date_limits = c( as.Date( '2020-02-01'), NA ) 
                             , path_to_save='size.png'
                             , last_tip
-                            , logscale = FALSE
+                            , log_y_axis = FALSE
                             , ...
 ) {
   library( ggplot2 ) 
@@ -172,7 +174,7 @@ SEIJR_plot_size <- function(trajdf
       geom_path(aes( x = Date, y = Cumulative, group = reported), col ="#E69F00")
   }
   
-  if (logscale == TRUE) {
+  if (log_y_axis == TRUE) {
     pl <- pl + scale_y_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
                              labels = scales::trans_format("log10", scales::math_format(10^.x)), 
                              limits = c(1, NA))+
@@ -207,7 +209,7 @@ SEIJR_plot_size <- function(trajdf
 #' 
 #" Also computes CIs of various dynamic variables 
 #'
-#" @param trajdf Either a dataframe or a path to rds containing a data frame with a posterior sample of trajectories (see combine_traj)
+#' @param trajdf Either a dataframe or a path to rds containing a data frame with a posterior sample of trajectories (see combine_traj)
 #' @param logdf Either a dataframe or a path to rds containing a data frame with posterior logs
 #' @param case_data An optional dataframe containing reported/confirmed cases to be plotted alongside estimates. *Must* contain columns 'Date' and 'Confirmed'. Ensure Date is not a factor or character (see as.Date )
 #' @param date_limits  a 2-vector containing bounds for the plotting window. If the upper bound is missing, will use the maximum time in the trajectories
@@ -220,7 +222,7 @@ SEIJR_plot_daily_inf <- function(trajdf
                                  , date_limits = c( as.Date( '2020-02-01'), NA ) 
                                  , path_to_save='daily.png'
                                  , last_tip 
-                                 , logscale = FALSE
+                                 , log_y_axis = FALSE
                                  , ...
 ) {
   library( ggplot2 ) 
@@ -233,10 +235,12 @@ SEIJR_plot_daily_inf <- function(trajdf
     # assume this is path to a rds
     readRDS(trajdf) -> trajdf
   }
-  
+  if (!is.data.frame(logdf)){
+    # assume this is path to a rds
+    readRDS(logdf) -> X
+  } else {  X <- logdf }
 
 
-  X <- logdf
 
   
   if(is.null(X$seir.tau))
@@ -304,7 +308,7 @@ SEIJR_plot_daily_inf <- function(trajdf
     phylo_plot_aesthetics +
     ylab ('Estimated daily new infections')  
   
-  if (logscale == TRUE) {
+  if (log_y_axis == TRUE) {
     pl <- pl + scale_y_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
                              labels = scales::trans_format("log10", scales::math_format(10^.x) ))+ 
       ylab ('Estimated daily new infections (log scale) ')
@@ -317,9 +321,9 @@ SEIJR_plot_daily_inf <- function(trajdf
       stop('case_data Date variable must be class *Date*, not character, integer, or POSIXct. ')
     }
     pl <- pl +
-      # geom_segment(aes(x = Date, y = daily_cases, xend=Date) , size = 0.5, alpha = 0.5, yend = 0, col = "#E69F00", linetype = "dashed") +
-      geom_point( aes( x = Date, y = daily_cases ) , size =2, shape = 21, fill =  "#E69F00", col = "black") #+
-    # geom_path(aes( x = Date, y = daily_cases, group = reported), col ="#E69F00")
+      # geom_segment(aes(x = Date, y = Confirmed, xend=Date) , size = 0.5, alpha = 0.5, yend = 0, col = "#E69F00", linetype = "dashed") +
+      geom_point( aes( x = Date, y = Confirmed ) , size =2, shape = 21, fill =  "#E69F00", col = "black") #+
+    # geom_path(aes( x = Date, y = Confirmed, group = reported), col ="#E69F00")
   }
   
 
@@ -364,13 +368,16 @@ SEIJR_plot_Rt <- function(trajdf
   library( ggplot2 ) 
   library( lubridate )
   
-  
   if (!is.data.frame(trajdf)){
-    # assume this is path to a rds 
-    readRDS(trajdf) -> trajdf 
+    # assume this is path to a rds
+    readRDS(trajdf) -> trajdf
   }
+  if (!is.data.frame(logdf)){
+    # assume this is path to a rds
+    readRDS(logdf) -> X
+  } else {  X <- logdf }
   
-  X <- logdf
+  
   
  
   
@@ -432,10 +439,10 @@ SEIJR_plot_Rt <- function(trajdf
     ylab ('Effective reproduction number through time R(t)' )
   
   if (!is.null(school_closure_date))
-    pl <- pl + geom_vline(xintercept =  school_closure_date, linetype = "dashed", col = "orange")
+    pl <- pl + geom_vline(xintercept =  as.POSIXct.Date(school_closure_date), linetype = "dashed", col = "orange")
   
   if (!is.null(lockdown_date))
-    pl <- pl + geom_vline(xintercept =  lockdown_date, linetype = "dashed", col = "darkred")
+    pl <- pl + geom_vline(xintercept =  as.POSIXct.Date(lockdown_date), linetype = "dashed", col = "darkred")
   
   if (!is.null(path_to_save))
     ggsave(pl, file = path_to_save)
