@@ -21,11 +21,11 @@ Cloning this github repo will allow file paths to correctly point to data and co
 
 ### 1: Software and packages
 You will need to install:
-* [BEAST2](https://www.beast2.org/) and associated package PhyDyn (for coupled MCMC runs we also use the BEASTLabs and CoupledMCMC packages)
-* [MAFFT](https://mafft.cbrc.jp/alignment/software/)
-* [IQ-TREE](http://www.iqtree.org/)
-* [TN93](https://github.com/veg/tn93)
-* [R](https://www.r-project.org/)
+1. [BEAST2](https://www.beast2.org/) and associated package PhyDyn (for coupled MCMC runs we also use the BEASTLabs and CoupledMCMC packages)
+2. [MAFFT](https://mafft.cbrc.jp/alignment/software/)
+3. [IQ-TREE](http://www.iqtree.org/)
+4. [TN93](https://github.com/veg/tn93)
+5. [R](https://www.r-project.org/)
 
 You will also need the CRAN R packages: `ape`, `treedater`, `phangorn`, `ggplot2`,`ggtreee`, `scales`, `lubridate`, `limSolve`, `dplyr`
 and the utility functions package `sarscov2` from the [sarscov2Rutils github](https://github.com/emvolz-phylodynamics/sarscov2Rutils).
@@ -38,24 +38,24 @@ Our analyses are carried out on sequence and metadata downloaded from the EpiCoV
 ![](./images/gisaid_dash.PNG)
 
 With the downloaded data we carry out the following steps, you may wish to change these:
-* Remove sequences from non-humans.
-* Remove sequences missing full date (no day / month / year given).
-* Remove gaps from sequence labels (needed for some software used).
-* Remove strings of 4+ N from sequences and replace with gaps (-).(This improves alignment but introduces other issues - may be less important if trying to align a smaller sample).
-* Drop 80% of UK sequences from March 25<sup>th</sup> onwards (helps to reduce the size of the alignment as there are so many UK sequences).
-* Align sequences with MAFFT. We currently add new sequences to the existing alignment with the --add tag rather than realigning the whole set each time.
-* Drop any position in the aligned sequences with >99% gaps (empty columns).
-* remove sequences with >10% gaps/Ns.
-* Clip sequences based on a reference (29400 bases starting from first ORF).
-* Build maximum likelihood phylogenies on subsets of the alignment (~1000 sequences) with an additional 500 sequences that are known to be well sequenced and aligned. (IQtree).
-* For each maximum likelihood phylogeny calculate cophenetic distance matrix (cophenetic.phylo in ape r package)  and drop new sequences from the alignment if their mean pairwise GD is >3 standard deviations from the phylogeny mean.
-* Calculate [TN93 distances](https://github.com/veg/tn93) and keep those <0.0001.
+1. Remove sequences from non-humans.
+2. Remove sequences missing full date (no day / month / year given).
+3. Remove gaps from sequence labels (needed for some software used).
+4. Remove strings of 4+ N from sequences and replace with gaps (-).(This improves alignment but introduces other issues - may be less important if trying to align a smaller sample).
+5. Drop 80% of UK sequences from March 25<sup>th</sup> onwards (helps to reduce the size of the alignment as there are so many UK sequences).
+6. Align sequences with MAFFT. We currently add new sequences to the existing alignment with the --add tag rather than realigning the whole set each time.
+7. Drop any position in the aligned sequences with >99% gaps (empty columns).
+8. remove sequences with >10% gaps/Ns.
+9. Clip sequences based on a reference (29400 bases starting from first ORF).
+10. Build maximum likelihood phylogenies on subsets of the alignment (~1000 sequences) with an additional 500 sequences that are known to be well sequenced and aligned. (IQtree).
+11. For each maximum likelihood phylogeny calculate cophenetic distance matrix (cophenetic.phylo in ape r package)  and drop new sequences from the alignment if their mean pairwise GD is >3 standard deviations from the phylogeny mean.
+12. Calculate [TN93 distances](https://github.com/veg/tn93) and keep those <0.0001.
 
 ### 3: Editing downloaded metadata
-* Edit metadata file to include only sequences included in the final alignment.
-* Identify duplicate sequences. The majority of our analyses use only the deduplicated data with the oldest sequence from each set of duplicates retained. A binary column is added to the metadata file (inNoDups) to identify this subset of the sequences for use when building local alignments.
-* Date column standardised to sampleDate to account for differences in date format occasionally present.
-* 'region, country, division and location' columns renamed to 'Continent, Country, RegionOrState and CityOrCounty' to match previous database format, not required as these can be referenced by new column names in inclusion/exclusion rules code.
+1. Edit metadata file to include only sequences included in the final alignment.
+2. Identify duplicate sequences. The majority of our analyses use only the deduplicated data with the oldest sequence from each set of duplicates retained. A binary column is added to the metadata file (inNoDups) to identify this subset of the sequences for use when building local alignments.
+3. Date column standardised to sampleDate to account for differences in date format occasionally present.
+4. 'region, country, division and location' columns renamed to 'Continent, Country, RegionOrState and CityOrCounty' to match previous database format, not required as these can be referenced by new column names in inclusion/exclusion rules code.
 
 
 **NOTE:** As we are running analyses on any regions globally with a significant number of sequences (15-20+) we are downloading the whole GISAID database in this way. You may want to develop a simpler way to produce local alignments without first aligning the full database.
