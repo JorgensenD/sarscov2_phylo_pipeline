@@ -62,7 +62,7 @@ With the downloaded data we carry out the following steps, you may wish to chang
 
 ### 4: Producing BEAST2 xml
 
-  * [Example script producing alingment and BEAST2 xml](./R/eg_xml_format.R)
+  * [Example script producing alignment and BEAST2 xml](./R/eg_xml_format.R)
   * [Template BEAST2 xml file used in our analyses](https://github.com/emvolz-phylodynamics/sarscov2Rutils/tree/sarscov2Rutils/inst/extdata)
 
 From the complete gisaid alignment and metadata individual alignments are produced using the  `sarscov2Rutils` R package. These alignments are used to generate a set of starting trees for multiple beast runs which are inserted into xml templates available [here](https://github.com/emvolz-phylodynamics/sarscov2Rutils/tree/sarscov2Rutils/inst/extdata). These templates will be downloaded alongside the R package. 
