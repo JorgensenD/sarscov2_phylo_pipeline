@@ -73,7 +73,8 @@ d3 = prep_tip_labels_seijr( 'gisaid.fas', outfn = 'algn3.fasta', regiontips = re
 
 # Make the starting trees
 # Note requires IQTREE, ncpu > 1 will not work on windows
-tds = make_starting_trees('algn3.fasta', treeoutfn = "startTrees.nwk", plotout = 'MLtree.png', ntres = n_startingtrees, ncpu = 6)
+#tds = make_starting_trees('algn3.fasta', treeoutfn = "startTrees.nwk", plotout = 'MLtree.png', ntres = n_startingtrees, ncpu = 6) # have a fix for plotout not yet pushed to repo
+tds = make_starting_trees('algn3.fasta', treeoutfn = "startTrees.nwk", ntres = n_startingtrees, ncpu = 6)
 
 file.copy( system.file( package='sarscov2', 'extdata/seijr0.1.3_skeleton.xml') , paste0(region, '.xml') )
 
