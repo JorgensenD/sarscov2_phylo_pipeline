@@ -34,7 +34,7 @@ IQ-TREE and the BEAST2 bin/lib (windows/unix) folder will need to be on the PATH
 
 ### 2: Alignment and filtering
 
-Our analyses are carried out on sequence and metadata downloaded from the EpiCoV database on [gisaid.org](gisaid.org). These files are available from the downloads tab once you are registered for an account.
+Our analyses are carried out on sequence and metadata downloaded from the EpiCoV database on [gisaid.org](https://gisaid.org). These files are available from the downloads tab once you are registered for an account.
 ![](./images/gisaid_dash.PNG)
 
 With the downloaded data we carry out the following steps, you may wish to change these:
