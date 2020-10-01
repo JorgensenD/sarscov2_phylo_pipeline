@@ -32,7 +32,7 @@ and the utility functions package `sarscov2` from the [sarscov2Rutils github](ht
 
 IQ-TREE and the BEAST2 bin/lib (windows/unix) folder will need to be on the PATH to work with the convenience wrapper functions in sarscov2Rutils. 
 
-### 2: Alignment and filtering
+### 2a: Alignment and filtering (Initial analyses)
 
 Our analyses are carried out on sequence and metadata downloaded from the EpiCoV database on [gisaid.org](https://gisaid.org). These files are available from the downloads tab once you are registered for an account.
 ![](./images/gisaid_dash.PNG)
@@ -49,9 +49,18 @@ With the downloaded data we carry out the following steps, you may wish to chang
 9. Clip sequences based on a reference (29400 bases starting from first ORF).
 10. Build maximum likelihood phylogenies on subsets of the alignment (~1000 sequences) with an additional 500 sequences that are known to be well sequenced and aligned. (IQtree).
 11. For each maximum likelihood phylogeny calculate cophenetic distance matrix (cophenetic.phylo in ape r package)  and drop new sequences from the alignment if their mean pairwise GD is >3 standard deviations from the phylogeny mean.
-12. Calculate [TN93 distances](https://github.com/veg/tn93) and keep those <0.0001.
+12. Calculate [tn93 distances](https://github.com/veg/tn93) and keep those <0.0001.
+
+### 2b: GISAID alignment
+GISAID now produces multiple sequence alignments daily which carry out many of the same alignmnet steps as above.
+Downloaded GISAID multiple sequence alignments are trimmed and sequences with incomplete data are [removed](./R/preprocess_eg.R). TN93 distances are calculated as before:
+```
+tn93 -t 0.0001 -o dist.txt algn3.fas
+```
+tn93 can be built from the github repo or is available via bioconda.
 
 ### 3: Editing downloaded metadata
+  * [Example preprocessing script (09/20) 
 1. Edit metadata file to include only sequences included in the final alignment.
 2. Identify duplicate sequences. The majority of our analyses use only the deduplicated data with the oldest sequence from each set of duplicates retained. A binary column is added to the metadata file (inNoDups) to identify this subset of the sequences for use when building local alignments.
 3. Date column standardised to sampleDate to account for differences in date format occasionally present.
